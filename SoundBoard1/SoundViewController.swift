@@ -30,10 +30,11 @@ class SoundViewController: UIViewController {
     func setupRecorder() {
     
         //Create an audio session 
+        do {
         let session = AVAudioSession.sharedInstance()
-        session.setCategory(AVAudioSessionCategoryPlayAndRecord))
-        session.overrideOutputAudioPort(.speaker)
-        session.setActive(true)
+        try session.setCategory(AVAudioSessionCategoryPlayAndRecord)
+        try session.overrideOutputAudioPort(.speaker)
+        try session.setActive(true)
         
         //Create URl for the audio file
       
@@ -43,7 +44,9 @@ class SoundViewController: UIViewController {
         
         //Create AudioRecorder object
     audioRecorder = AVAudioRecorder(url: <#T##URL#>, settings: <#T##[String : Any]#>)
-    
+        } catch let error as NSError{
+           print(error)
+        }
     }
     
     
