@@ -29,38 +29,60 @@ class SoundViewController: UIViewController {
     
     func setupRecorder() {
     
-        //Create an audio session 
-        do {
-        let session = AVAudioSession.sharedInstance()
-        try session.setCategory(AVAudioSessionCategoryPlayAndRecord)
-        try session.overrideOutputAudioPort(.speaker)
-        try session.setActive(true)
+             //Create an audio session
+             do {
+             let session = AVAudioSession.sharedInstance()
+             try session.setCategory(AVAudioSessionCategoryPlayAndRecord)
+             try session.overrideOutputAudioPort(.speaker)
+             try session.setActive(true)
         
-        //Create URl for the audio file
+             //Create URl for the audio file
       
-            let basePath : String = NSSearchPathForDirectoriesInDomains(.documentDirectory,.userDomainMask, true).first!
-                let pathComponents = [basePath,"audio.m4a"]
-            let audioURL = NSURL.fileURL(withPathComponents: pathComponents)!
-            //Create settings for  the audio recorder
+             let basePath : String = NSSearchPathForDirectoriesInDomains(.documentDirectory,.userDomainMask, true).first!
+             let pathComponents = [basePath,"audio.m4a"]
+             let audioURL = NSURL.fileURL(withPathComponents: pathComponents)!
+             print("#####################################")
+             print(audioURL)
+              print("#####################################")   
+            
+             //Create settings for  the audio recorder
       
             
-            var settings : [String:AnyObject] = [:]
-            settings[AVFormatIDKey] = Int(kAudioFormatMPEG4AAC) as AnyObject? 
-            settings[AVSampleRateKey] = 44100.0 as AnyObject?
-            settings[AVNumberOfChannelsKey] = 2 as AnyObject?
+             var settings : [String:AnyObject] = [:]
+             settings[AVFormatIDKey] = Int(kAudioFormatMPEG4AAC) as AnyObject?
+             settings[AVSampleRateKey] = 44100.0 as AnyObject?
+             settings[AVNumberOfChannelsKey] = 2 as AnyObject?
             
             
-        //Create AudioRecorder object
-    audioRecorder = try AVAudioRecorder(url: audioURL, settings: settings)
-    audioRecorder!.prepareToRecord()
+             //Create AudioRecorder object
+             audioRecorder = try AVAudioRecorder(url: audioURL, settings: settings)
+             audioRecorder!.prepareToRecord()
         } catch let error as NSError{
-           print(error)
+             print(error)
         }
     }
     
     
 
     @IBAction func recordTapped(_ sender: Any) {
+    
+        if audioRecorder!.isRecording {
+            //stop the recording
+            audioRecorder?.stop()
+            
+            // Change button title to record
+            
+            recordButton.setTitle("Record", for: .normal)
+             } else {
+            //Start the recording 
+            
+            audioRecorder?.record()
+           
+            //Change button title to stop
+            recordButton.setTitle("Stop", for: .normal)
+
+        }
+    
     }
  
     
